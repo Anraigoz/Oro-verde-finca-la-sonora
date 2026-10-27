@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paso a paso | Exportación Oro Verde - Finca La Sonora</title>
+<style>
+  :root{
+    --verde-oscuro:#1b5e20;--verde:#2e7d32;--verde-claro:#a5d6a7;
+    --crema:#f7f3e9;--dorado:#d4a017;--texto:#263238;--rojo:#c62828;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+  body{background:var(--crema);color:var(--texto);line-height:1.6}
+  header{
+    background:var(--verde-oscuro);color:#fff;padding:1.5rem 2rem;
+    display:flex;align-items:center;gap:1rem;box-shadow:0 2px 8px rgba(0,0,0,.3)
+  }
+  header img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--dorado)}
+  header h1{font-size:1.5rem}
+  header small{display:block;color:var(--verde-claro);font-weight:400}
+  nav{background:var(--verde);padding:.6rem 2rem}
+  nav a{color:#fff;text-decoration:none;margin-right:1.2rem;font-weight:600}
+  nav a:hover{color:var(--dorado)}
+  main{max-width:950px;margin:auto;padding:2rem 1.5rem}
+
+  section{background:#fff;border-radius:14px;padding:1.6rem 2rem;margin-bottom:1.6rem;
+    box-shadow:0 3px 10px rgba(0,0,0,.1)}
+  h2{color:var(--verde-oscuro);border-bottom:3px solid var(--dorado);padding-bottom:.4rem;margin-bottom:1rem}
+  h3{color:var(--verde);margin:1.2rem 0 .5rem}
+  p,li{font-size:.98rem}
+  ul,ol{margin-left:1.5rem;margin-bottom:.8rem}
+  code{background:#eceff1;padding:.15rem .4rem;border-radius:5px;
+    font-family:Consolas,'Courier New',monospace;font-size:.9rem;color:var(--rojo)}
+  pre{background:#263238;color:#c8e6c9;border-radius:10px;padding:1rem;
+    overflow-x:auto;font-size:.85rem;margin:.8rem 0}
+  table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+  th{background:var(--verde);color:#fff;padding:.55rem;text-align:left}
+  td{padding:.5rem;border:1px solid #eceff1}
+  tr:nth-child(even) td{background:#f1f8e9}
+  .nota{background:#fff8e1;border-left:5px solid var(--dorado);padding:.8rem 1rem;
+    border-radius:6px;margin:.8rem 0;font-size:.93rem}
+  .etiqueta-paso{display:inline-block;background:var(--dorado);color:#1b1b1b;font-weight:800;
+    padding:.2rem .7rem;border-radius:6px;margin-right:.4rem}
+  footer{background:var(--verde-oscuro);color:#e8f5e9;text-align:center;padding:1.2rem;margin-top:1rem}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../Imagenes oro verde/aguacates%20cosechados.jpg" alt="Logo Oro Verde">
+  <div>
+    <h1>Documentación paso a paso del proyecto</h1>
+      <small>Exportación Oro Verde · Finca La Sonora &nbsp;|&nbsp; Herramientas de Programación III — Partes B y C</small>
+  </div>
+</header>
+
+<nav>
+  <a href="#index">1. Estructura</a>
+  <a href="#portada">2. Página web</a>
+  <a href="#parteB">3. Parte B (XML/JSON)</a>
+  <a href="#crudWeb">4. Parte C web (JS)</a>
+  <a href="#csharp">5. Parte C en C#</a>
+  <a href="#bonus">6. Puntos extra</a>
+  <a href="#entrega">7. Entrega</a>
+</nav>
+
+<main>
+
+<section id="index">
+  <h2>1. Estructura de archivos creados (carpeta del escritorio)</h2>
+  <p>Todo el proyecto se guardó en la carpeta del escritorio <b>"Oro verde finca la sonora"</b>:</p>
+<pre>
+Oro verde finca la sonora/          ← carpeta del proyecto (escritorio)
+├── index.html                      ← página principal "Exportación Oro Verde"
+├── crud.html                       ← PARTE C: aplicación CRUD web (JavaScript)
+├── empleados.xml                   ← PARTE B: archivo XML de empleados
+├── empleados.json                  ← PARTE B: archivo JSON de empleados
+├── PASO_A_PASO.html                ← este documento
+└── AppCSharp/                      ← PARTE C alternativa: proyecto C# Windows Forms
+    ├── CrudOroVerde.csproj         ← archivo del proyecto .NET 8
+    ├── Program.cs                  ← punto de entrada (Main)
+    ├── Empleado.cs                 ← clase entidad (los 7 campos)
+    ├── Principal.cs                ← lógica del formulario CRUD
+    └── Principal.Designer.cs       ← diseño visual (controles y layout)
+</pre>
+  <p>Las imágenes que usa la página provienen de la carpeta del escritorio
+     <b>"Imagenes oro verde"</b> (hermana de la carpeta del proyecto). La página las
+     referencia con la ruta relativa <code>Imagenes oro verde/&lt;archivo&gt;</code>.</p>
+</section>
+
+<section id="portada">
+  <h2>2. Página web "Exportación Oro Verde - Finca La Sonora"</h2>
+  <ol>
+    <li><span class="etiqueta-paso">Paso 1</span> Se creó <code>index.html</code> con 6 secciones:
+        barra de navegación fija, portada (<code>header</code>) con imagen de fondo
+        (la del paisaje antioqueño), sección Nosotros, tarjetas de estadísticas,
+        sección Servicios, Galería y una sección de Contacto con formulario.</li>
+    <li><span class="etiqueta-paso">Paso 2</span> El logo del sitio usa la imagen con
+        los aguacates verdes (foto de la banda transportadora:
+        <code>aguacates cosechados.jpg</code>) recortada en círculo con borde dorado.</li>
+    <li><span class="etiqueta-paso">Paso 3</span> Todo el estilo se hizo con CSS moderno
+        dentro del mismo HTML (variables <code>:root</code>, grid con
+        <code>repeat(auto-fit, minmax(...))</code>, hover con transiciones). Así el sitio
+        responde bien en pantalla pequeña o grande.</li>
+    <li><span class="etiqueta-paso">Paso 4</span> En la barra de navegación hay un enlace
+        <b>"App Empleados"</b> que lleva al módulo CRUD (Parte C).</li>
+  </ol>
+</section>
+
+<section id="parteB">
+  <h2>3. PARTE B — Archivos empleados.xml y empleados.json</h2>
+  <ol>
+    <li><span class="etiqueta-paso">Paso 1</span> Se definió la estructura de los 7 campos
+        exigidos por la guía:
+        <code>IdEmpleado</code> (int identity),
+        <code>strNombre</code> (string 50),
+        <code>NumDocumento</code> (long/bigint),
+        <code>strDireccion</code> (string 50),
+        <code>strTelefono</code> (string 50),
+        <code>strEmail</code> (string 50),
+        <code>dtmIngreso</code> (datetime).</li>
+    <li><span class="etiqueta-paso">Paso 2</span> Se creó manualmente
+        <code>empleados.xml</code>: elemento raíz <code>&lt;Empleados&gt;</code> y 5
+        registros hijos <code>&lt;Empleado&gt;</code> con coherencia realista
+        (nombres antioqueños, direcciones de Medellín, Rionegro, Urrao, Sopetrán,
+        celulares de 10 dígitos y correos del dominio de la finca).</li>
+    <li><span class="etiqueta-paso">Paso 3</span> Verificación del XML: se abre
+        directamente con Chrome/Edge/Firefox. Si está bien formado se muestra
+        coloreado; si hay error, el navegador indica la línea del problema.</li>
+    <li><span class="etiqueta-paso">Paso 4</span> Se creó manualmente
+        <code>empleados.json</code> con EXACTAMENTE los mismos 5 registros, dentro de
+        la propiedad <code>"empleados"</code> (array de objetos).</li>
+    <li><span class="etiqueta-paso">Paso 5</span> Validación del JSON: se pega el
+        contenido en <a href="https://jsonlint.com" target="_blank">jsonlint.com</a>
+        y devuelve "Valid JSON" sin errores de sintaxis.</li>
+  </ol>
+  <h3>Fragmento del XML (registro 1)</h3>
+<pre>&lt;Empleado&gt;
+  &lt;IdEmpleado&gt;1&lt;/IdEmpleado&gt;
+  &lt;strNombre&gt;Juan Carlos Pérez&lt;/strNombre&gt;
+  &lt;NumDocumento&gt;1017234567&lt;/NumDocumento&gt;
+  &lt;strDireccion&gt;Calle 45 #23-10, Medellín&lt;/strDireccion&gt;
+  &lt;strTelefono&gt;3001234567&lt;/strTelefono&gt;
+  &lt;strEmail&gt;jperez@correooroverde.com&lt;/strEmail&gt;
+  &lt;dtmIngreso&gt;2024-03-15&lt;/dtmIngreso&gt;
+&lt;/Empleado&gt;</pre>
+  <h3>Fragmento equivalente del JSON</h3>
+<pre>{
+  "IdEmpleado": 1,
+  "strNombre": "Juan Carlos Pérez",
+  "NumDocumento": 1017234567,
+  "strDireccion": "Calle 45 #23-10, Medellín",
+  "strTelefono": "3001234567",
+  "strEmail": "jperez@correooroverde.com",
+  "dtmIngreso": "2024-03-15"
+}</pre>
+</section>
+
+<section id="crudWeb">
+  <h2>4. PARTE C — Aplicación CRUD web en JavaScript (crud.html)</h2>
+  <p>La guía permite realizar la Parte C "en otra herramienta como Python o en web con
+     JavaScript". Se eligió el CRUD web porque no requiere instalar nada: solo abrir
+     <code>crud.html</code> con Chrome, Edge o Firefox.</p>
+  <h3>Cómo se cumple cada requisito</h3>
+  <table>
+    <tr><th>Requisito</th><th>Implementación en el código</th></tr>
+    <tr><td>RF-01 Cargar datos</td>
+        <td>Al abrir la página, <code>cargarDatosIniciales()</code> hace
+            <code>fetch("empleados.json")</code>; si falla lee
+            <code>empleados.xml</code> con <code>DOMParser</code>. Además restaura
+            cambios previos guardados en <code>localStorage</code> si existen.</td></tr>
+    <tr><td>RF-02 Visualizar</td>
+        <td><code>renderizarTabla()</code> pinta la tabla de 7 columnas con
+            encabezados descriptivos y filas alternadas; <code>esc()</code> evita
+            que los datos rompan el HTML.</td></tr>
+    <tr><td>RF-03 Agregar</td>
+        <td>Campos TextBox del formulario + botón <b>Guardar</b>:
+            <code>guardarEmpleado()</code> agrega el registro al array y lo persiste.</td></tr>
+    <tr><td>RF-04 Editar</td>
+        <td><code>seleccionarFila(id)</code> (un clic en la fila o doble clic) carga los
+            7 datos en los TextBox; al guardar, el índice <code>indiceEditando</code>
+            indica que es una actualización, no un nuevo registro.</td></tr>
+    <tr><td>RF-05 Eliminar</td>
+        <td><code>eliminarEmpleado(id)</code> pide confirmación con
+            <code>confirm()</code> antes de remover del array y del archivo.</td></tr>
+    <tr><td>RF-06 Guardar archivo</td>
+        <td><code>persistir()</code> guarda copia en <code>localStorage</code> y el botón
+            <b>"Descargar XML y JSON"</b> genera los dos archivos actualizados con
+            <code>generarXml()</code> y <code>generarJson()</code> para reemplazar
+            los de la Parte B.</td></tr>
+    <tr><td>RF-07 Validación</td>
+        <td><code>guardarEmpleado()</code> valida nombre/documento/email vacíos,
+            formato del correo (regex) y documentos duplicados; muestra mensaje
+            informativo con <code>mostrarMensaje()</code>.</td></tr>
+    <tr><td>RF-08 ID automático</td>
+        <td><code>calcularIdSiguiente()</code> obtiene el máximo
+            <code>IdEmpleado</code> + 1; el usuario nunca escribe el ID
+            (el campo <code>txtId</code> es de solo lectura).</td></tr>
+  </table>
+  <h3>Cómo explicar la lógica al profesor</h3>
+  <ul>
+    <li><b>Modelo en memoria:</b> el array <code>empleados</code> es la "Lista de
+        empleados". Toda la interfaz se dibuja a partir de él
+        (<code>renderizarTabla()</code>), como un grid que se refresca.</li>
+    <li><b>Ciclo de una operación:</b> modificar el array → <code>persistir()</code> →
+        <code>renderizarTabla()</code>. Un solo camino para agregar, editar o
+        eliminar: por eso los datos del grid y del archivo nunca se desincronizan.</li>
+    <li><b>Doble persistencia:</b> los mismos datos se generan en XML y JSON;
+        el XML para verificarlo en el navegador y el JSON para validarlo en
+        jsonlint.com.</li>
+  </ul>
+</section>
+
+<section id="csharp">
+  <h2>5. PARTE C — Proyecto equivalente en C# Windows Forms (AppCSharp)</h2>
+  <p>Además de la versión web se creó el proyecto clásico de la guía para que puedas
+     compilarlo en Visual Studio 2022 Community (o ejecutarlo con .NET 8):</p>
+  <h3>Qué hace cada archivo</h3>
+  <table>
+    <tr><th>Archivo</th><th>Responsabilidad</th></tr>
+    <tr><td><code>CrudOroVerde.csproj</code></td>
+        <td>Declara el proyecto: aplicación <code>WinExe</code> con
+            <code>net8.0-windows</code> y <code>UseWindowsForms=true</code>.</td></tr>
+    <tr><td><code>Program.cs</code></td>
+        <td><code>Main</code>: inicializa la aplicación y abre el formulario principal
+            <code>Principal</code>.</td></tr>
+    <tr><td><code>Empleado.cs</code></td>
+        <td>Clase entidad con los 7 campos exactos de la estructura. La propiedad
+            extra <code>IngresoTexto</code> da la fecha formateada para el grid.</td></tr>
+    <tr><td><code>Principal.cs</code></td>
+        <td>Lógica CRUD: carga XML/JSON (
+            <code>XmlSerializer</code> y <code>JsonSerializer</code>), refresca el
+            <code>DataGridView</code> (<code>DataSource</code>), valida campos
+            (RF-07), genera IDs (<code>Max + 1</code>), guarda en ambos formatos y
+            exporta CSV.</td></tr>
+    <tr><td><code>Principal.Designer.cs</code></td>
+        <td>Construye la interfaz: <code>dgvEmpleados</code> con 7 columnas de
+            encabezados descriptivos, TextBoxes <code>txtId … txtEmail</code>,
+            <code>dtmIngreso</code>, botones <code>btnNuevo, btnGuardar,
+            btnEliminar, btnLimpiar, btnExportarCsv</code>, buscador
+            <code>txtBuscar</code> y etiquetas de estado. Los nombres siguen
+            notación húngara/camelCase como pide la guía.</td></tr>
+  </table>
+  <h3>Cómo compilarlo y mostrarlo</h3>
+  <ol>
+    <li><span class="etiqueta-paso">Paso 1</span> Abre Visual Studio 2022 →
+        <b>"Abrir un proyecto o solución"</b> → selecciona
+        <code>AppCSharp/CrudOroVerde.csproj</code>.
+        (Requiere la carga "Escritorio .NET"; con .NET 8 instalado compila directo).</li>
+    <li><span class="etiqueta-paso">Paso 2</span> Presiona <b>F5</b> (o el botón Iniciar).
+        El formulario carga <code>empleados.xml</code> o
+        <code>empleados.json</code> y pinta el <code>DataGridView</code> (RF-01).</li>
+    <li><span class="etiqueta-paso">Paso 3</span> Flujo para demo con el profesor:
+        <b>Nuevo → llenar campos → Guardar</b> (RF-03) ·
+        <b>clic en una fila → editar → Guardar</b> (RF-04) ·
+        <b>seleccionar fila → Eliminar</b> y confirmar (RF-05) ·
+        Verificar que <code>empleados.xml</code> y
+        <code>empleados.json</code> se actualizaron (RF-06).</li>
+    <li><span class="etiqueta-paso">Paso 4</span> Nota: guarda los archivos
+        <code>empleados.xml</code> y <code>empleados.json</code> en la carpeta del
+        proyecto (la aplicación los busca en la carpeta padre
+        <code>Oro verde finca la sonora</code>).</li>
+  </ol>
+</section>
+
+<section id="bonus">
+  <h2>6. Puntos extra implementados (bonus)</h2>
+  <ul>
+    <li>🔍 <b>Búsqueda / filtro de empleados</b> en vivo por nombre, documento o
+        correo, tanto en la versión web como en el formulario C#.</li>
+    <li>⬇ <b>Exportar a CSV</b> con separador ';' (compatible con Excel).</li>
+    <li>🔄 <b>Soporte dual XML+JSON simultáneo</b>: toda operación se persiste
+        en los dos formatos; en la interfaz hay selector de formato preferido y
+        botón de descarga de ambos archivos.</li>
+    <li>💾 <b>Copias en localStorage</b> (web): los cambios sobreviven al recargar
+        la página aunque el archivo de disco no se reemplace.</li>
+    <li>🛡 <b>Extra de validaciones</b>: correo con formato válido, documento no
+        duplicado y campo de ID siempre de solo lectura.</li>
+  </ul>
+</section>
+
+<section id="entrega">
+  <h2>7. Cómo entregar y verificar (resumen para el profesor)</h2>
+  <ol>
+    <li><span class="etiqueta-paso">Parte B</span> Abrir
+        <code>empleados.xml</code> en el navegador (debe verse coloreado) y pegar
+        <code>empleados.json</code> en jsonlint.com (debe devolver "Valid JSON").
+        Ambos contienen los mismos 5 empleados.</li>
+    <li><span class="etiqueta-paso">Parte C web</span> Abrir
+        <code>crud.html</code> y demostrar el flujo completo:
+        cargar (automático al iniciar) → agregar → editar → eliminar con
+        confirmación → <b>Descargar XML y JSON</b> para dejar los archivos
+        consistentes.</li>
+    <li><span class="etiqueta-paso">Parte C C#</span> Abrir
+        <code>AppCSharp/CrudOroVerde.csproj</code> en Visual Studio 2022 y ejecutar
+        con F5 para mostrar el mismo CRUD en el <code>DataGridView</code>.</li>
+    <li><span class="etiqueta-paso">Bonus</span> Mostrar el filtro de búsqueda
+        escribiendo en la caja, la exportación CSV y el selector dual
+        XML/JSON.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  Documentación del proyecto académico · Exportación Oro Verde · Finca La Sonora<br>
+  Herramientas de Programación III — Práctica XML / JSON / C# · 2026
+</footer>
+
+</body>
+</html>

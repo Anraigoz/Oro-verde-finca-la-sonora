@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exportación Oro Verde | Finca La Sonora</title>
+<style>
+  :root{
+    --verde-oscuro:#1b5e20;
+    --verde:#2e7d32;
+    --verde-claro:#a5d6a7;
+    --crema:#f7f3e9;
+    --dorado:#d4a017;
+    --texto:#263238;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+  body{background:var(--crema);color:var(--texto)}
+
+  /* ---------- Barra de navegación ---------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:var(--verde-oscuro);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0.7rem 2rem;box-shadow:0 2px 8px rgba(0,0,0,.3);
+  }
+  .logo{display:flex;align-items:center;gap:.6rem;color:#fff;font-weight:700;font-size:1.15rem}
+  .logo img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--dorado)}
+  nav ul{display:flex;gap:1.4rem;list-style:none}
+  nav a{color:#e8f5e9;text-decoration:none;font-weight:500;transition:.3s}
+  nav a:hover{color:var(--dorado)}
+
+  /* ---------- Portada ---------- */
+  header{
+    min-height:88vh;position:relative;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    background:linear-gradient(rgba(27,94,32,.75),rgba(27,94,32,.55)),
+      url("Imagenes oro verde/paisaje antioque%C3%B1o.jpg") center/cover no-repeat;
+  }
+  header .portada{color:#fff;max-width:800px;padding:2rem}
+  header h1{font-size:3rem;text-shadow:2px 3px 6px rgba(0,0,0,.55);letter-spacing:1px}
+  header h1 span{color:var(--dorado)}
+  header p{font-size:1.25rem;margin-top:1rem}
+  .btn{
+    display:inline-block;margin-top:2rem;padding:.9rem 2.2rem;
+    background:var(--dorado);color:#1b1b1b;font-weight:700;
+    text-decoration:none;border-radius:30px;transition:.3s;
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+  }
+  .btn:hover{background:var(--verde-claro);transform:translateY(-3px)}
+
+  /* ---------- Secciones ---------- */
+  section{padding:4rem 2rem;max-width:1100px;margin:auto}
+  .titulo-seccion{text-align:center;margin-bottom:2.5rem}
+  .titulo-seccion h2{font-size:2.1rem;color:var(--verde-oscuro)}
+  .titulo-seccion .linea{width:90px;height:4px;background:var(--dorado);margin:.7rem auto;border-radius:2px}
+
+  .tarjetas{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+  .tarjeta{
+    background:#fff;border-radius:14px;overflow:hidden;
+    box-shadow:0 4px 14px rgba(0,0,0,.12);transition:.3s;
+  }
+  .tarjeta:hover{transform:translateY(-6px);box-shadow:0 8px 22px rgba(0,0,0,.2)}
+  .tarjeta img{width:100%;height:210px;object-fit:cover;display:block}
+  .tarjeta .cuerpo{padding:1.2rem}
+  .tarjeta h3{color:var(--verde);margin-bottom:.5rem}
+  .tarjeta p{font-size:.95rem;line-height:1.5}
+
+  /* ---------- Estadísticas ---------- */
+  .estadisticas{
+    background:var(--verde-oscuro);color:#fff;border-radius:16px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    text-align:center;padding:2rem;gap:1rem;
+  }
+  .estadisticas .num{font-size:2.2rem;font-weight:800;color:var(--dorado)}
+  .estadisticas p{margin-top:.3rem}
+
+  /* ---------- Galería ---------- */
+  .galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+  .galeria img{
+    width:100%;height:200px;object-fit:cover;border-radius:12px;
+    transition:.35s;box-shadow:0 3px 10px rgba(0,0,0,.15);
+  }
+  .galeria img:hover{transform:scale(1.05)}
+
+  /* ---------- Contacto ---------- */
+  .contacto{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+  .contacto form{display:grid;gap:1rem;max-width:600px;margin:auto}
+  .contacto input,.contacto textarea{
+    padding:.8rem;border:1px solid #cfd8dc;border-radius:8px;font-size:1rem
+  }
+  .contacto button{
+    padding:.9rem;background:var(--verde);color:#fff;font-weight:700;
+    border:none;border-radius:8px;cursor:pointer;font-size:1rem
+  }
+  .contacto button:hover{background:var(--verde-oscuro)}
+  .info-contacto{text-align:center;margin-top:1.5rem;font-size:.95rem;color:#546e7a}
+
+  footer{
+    background:var(--verde-oscuro);color:#e8f5e9;
+    text-align:center;padding:1.5rem;margin-top:3rem
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="Imagenes oro verde/aguacates%20cosechados.jpg" alt="Logo Oro Verde">
+    Oro Verde · La Sonora
+  </div>
+  <ul>
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="crud.html">App Empleados</a></li>
+  </ul>
+</nav>
+
+<header id="inicio">
+  <div class="portada">
+    <h1>Exportación <span>Oro Verde</span></h1>
+    <p>Finca La Sonora · Aguacate Hass y lima Tahití de Antioquia para el mundo</p>
+    <a href="#nosotros" class="btn">Conócenos 🥑</a>
+  </div>
+</header>
+
+<section id="nosotros">
+  <div class="titulo-seccion">
+    <h2>¿Quiénes somos?</h2>
+    <div class="linea"></div>
+  </div>
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/Fruta cortada.jpg" alt="Cultivo de aguacate">
+      <div class="cuerpo">
+        <h3>Tradición campesina</h3>
+        <p>En La Sonora cultivamos con procesos sostenibles y respeto por el campo antioqueño, generando empleo para la vereda y sus familias.</p>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/aguacate-has-colombia-ICA.jpg" alt="Fruta de exportación">
+      <div class="cuerpo">
+        <h3>Calidad de exportación</h3>
+        <p>Fruta seleccionada, calibrada y certificada que cumple los estándar fitosanitarios de los mercados internacionales.</p>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/empaque de fruta.jpg" alt="Empaque y logística">
+      <div class="cuerpo">
+        <h3>Logística global</h3>
+        <p>De la finca al puerto en menos de 24 horas, con cadena de frío garantizada hacia Estados Unidos, Europa y Asia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="estadisticas">
+    <div><div class="num">+85</div><p>Hectáreas cultivadas</p></div>
+    <div><div class="num">+120</div><p>Empleos directos</p></div>
+    <div><div class="num">14</div><p>Países destino</p></div>
+    <div><div class="num">100%</div><p>Fruta certificada</p></div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="titulo-seccion">
+    <h2>Nuestros servicios</h2>
+    <div class="linea"></div>
+  </div>
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/Fruta%20cortada.webp" alt="Aguacate Hass">
+      <div class="cuerpo">
+        <h3>Aguacate Hass</h3>
+        <p>Nuestro oro verde: cosecha de calidad premium, calibres 12 a 32, listo para mercados exigentes.</p>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/arboles%20en%20produccion.webp" alt="Lima Tahití">
+      <div class="cuerpo">
+        <h3>Lima Tahití</h3>
+        <p>Citrus latifolia cultivada en laderas de Antioquia, con acidez estable y vida útil prolongada.</p>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <img src="Imagenes oro verde/aguacates%20cosechados.jpg" alt="Poscoseña">
+      <div class="cuerpo">
+        <h3>Poscoseña y empaque</h3>
+        <p>Selección, lavado, cepillado, encerado y empacado en cajas de 4 kg con trazabilidad completa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="titulo-seccion">
+    <h2>Galería de la finca</h2>
+    <div class="linea"></div>
+  </div>
+  <div class="galeria">
+    <img src="Imagenes oro verde/cosecha%20manual.webp" alt="Cosecha manual de aguacate">
+    <img src="Imagenes oro verde/Fruta%20cortada.jpg" alt="Recolección con canastillas">
+    <img src="Imagenes oro verde/Fruta%20cortada.webp" alt="Trabajadores cosechando">
+    <img src="Imagenes oro verde/aguacate-has-colombia-ICA.jpg" alt="Aguacate Hass empacado">
+    <img src="Imagenes oro verde/aguacates%20cosechados.jpg" alt="Línea de selección">
+    <img src="Imagenes oro verde/arboles%20en%20produccion.webp" alt="Árboles en producción">
+    <img src="Imagenes oro verde/empaque%20de%20fruta.jpg" alt="Cuarto frío de exportación">
+    <img src="Imagenes oro verde/paisaje antioque%C3%B1o.jpg" alt="Paisaje antioqueño">
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="titulo-seccion">
+    <h2>Contáctanos</h2>
+    <div class="linea"></div>
+  </div>
+  <div class="contacto">
+    <form onsubmit="event.preventDefault(); alert('¡Gracias por escribirnos! Te responderemos pronto.'); this.reset();">
+      <input type="text" placeholder="Nombre completo" required>
+      <input type="email" placeholder="Correo electrónico" required>
+      <textarea rows="4" placeholder="Mensaje" required></textarea>
+      <button type="submit">Enviar mensaje</button>
+    </form>
+    <div class="info-contacto">
+      📍 Vereda La Sonora, Antioquia, Colombia &nbsp;|&nbsp; 📞 +57 300 000 0000 &nbsp;|&nbsp; ✉️ ventas@oroverde-lasonora.com
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Exportación Oro Verde · Finca La Sonora — Proyecto académico de Herramientas de Programación III
+</footer>
+
+</body>
+</html>

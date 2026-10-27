@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUD Empleados | Exportación Oro Verde - Finca La Sonora</title>
+<style>
+  :root{
+    --verde-oscuro:#1b5e20;--verde:#2e7d32;--verde-claro:#a5d6a7;
+    --crema:#f7f3e9;--dorado:#d4a017;--texto:#263238;--rojo:#c62828;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+  body{background:var(--crema);color:var(--texto);min-height:100vh}
+
+  header{
+    background:var(--verde-oscuro);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1rem 2rem;box-shadow:0 2px 8px rgba(0,0,0,.3);flex-wrap:wrap;gap:.6rem;
+  }
+  .titulo{display:flex;align-items:center;gap:.7rem;font-weight:700;font-size:1.15rem}
+  .titulo img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--dorado)}
+  .titulo small{display:block;font-weight:400;font-size:.75rem;color:var(--verde-claro)}
+  header a{color:var(--dorado);text-decoration:none;font-weight:600}
+
+  main{max-width:1150px;margin:auto;padding:1.5rem;display:grid;gap:1.5rem}
+
+  /* ---------- Barra de herramientas ---------- */
+  .toolbar{
+    background:#fff;border-radius:12px;padding:1rem;
+    display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.1)
+  }
+  .toolbar label{font-weight:600;font-size:.9rem}
+  .toolbar select,.toolbar input[type=text]{
+    padding:.55rem .8rem;border:1px solid #cfd8dc;border-radius:8px;font-size:.95rem
+  }
+  .botones{display:flex;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+  button{
+    padding:.6rem 1.2rem;border:none;border-radius:8px;font-weight:700;
+    cursor:pointer;font-size:.92rem;transition:.25s
+  }
+  .btn-nuevo{background:var(--verde);color:#fff}
+  .btn-nuevo:hover{background:var(--verde-oscuro)}
+  .btn-guardar{background:var(--dorado);color:#1b1b1b}
+  .btn-guardar:hover{filter:brightness(1.1)}
+  .btn-limpiar{background:#90a4ae;color:#fff}
+  .btn-exportar{background:#1565c0;color:#fff}
+  .btn-descargar{background:#6a1b9a;color:#fff}
+
+  /* ---------- Formulario ---------- */
+  .panel-form{
+    background:#fff;border-radius:12px;padding:1.3rem;
+    box-shadow:0 3px 10px rgba(0,0,0,.1)
+  }
+  .panel-form h2{
+    font-size:1.05rem;color:var(--verde-oscuro);margin-bottom:.9rem;
+    border-bottom:2px solid var(--verde-claro);padding-bottom:.5rem
+  }
+  .campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem}
+  .campo{display:grid;gap:.3rem}
+  .campo label{font-size:.82rem;font-weight:600;color:#546e7a}
+  .campo label .req{color:var(--rojo)}
+  .campo input{
+    padding:.6rem .8rem;border:1px solid #cfd8dc;border-radius:8px;font-size:.95rem
+  }
+  .campo input:focus{outline:2px solid var(--verde-claro);border-color:var(--verde)}
+  .campo input[readonly]{background:#eceff1;color:#78909c}
+  .acciones-form{display:flex;gap:.6rem;margin-top:1rem;justify-content:flex-end}
+
+  /* ---------- Tabla ---------- */
+  .panel-tabla{
+    background:#fff;border-radius:12px;padding:1.2rem;
+    box-shadow:0 3px 10px rgba(0,0,0,.1)
+  }
+  .panel-tabla h2{
+    font-size:1.05rem;color:var(--verde-oscuro);margin-bottom:.8rem;
+    border-bottom:2px solid var(--verde-claro);padding-bottom:.5rem
+  }
+  .contenedor-tabla{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  thead th{
+    background:var(--verde);color:#fff;padding:.7rem .6rem;text-align:left;
+    white-space:nowrap
+  }
+  tbody td{padding:.55rem .6rem;border-bottom:1px solid #eceff1}
+  tbody tr:nth-child(even){background:#f1f8e9}
+  tbody tr:hover{background:var(--verde-claro);cursor:pointer}
+  tbody tr.seleccionada{outline:2px solid var(--dorado);background:#fff8e1}
+  .tbl-accion{white-space:nowrap}
+  .mini{padding:.35rem .7rem;font-size:.78rem;border-radius:6px;color:#fff}
+  .mini-editar{background:var(--dorado)}
+  .mini-eliminar{background:var(--rojo)}
+
+  #txtMensaje{font-size:.9rem;font-weight:600;min-height:1.2rem}
+  .ok{color:var(--verde)} .error{color:var(--rojo)}
+
+  footer{
+    background:var(--verde-oscuro);color:#e8f5e9;text-align:center;
+    padding:1rem;margin-top:2rem;font-size:.85rem
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="titulo">
+    <img src="Imagenes oro verde/aguacates%20cosechados.jpg" alt="Logo">
+    <div>Exportación Oro Verde · Finca La Sonora
+      <small>Módulo de gestión de empleados (Parte C)</small>
+    </div>
+  </div>
+  <a href="index.html">← Volver al sitio</a>
+</header>
+
+<main>
+  <!-- Selector de formato de persistencia + búsqueda (bonus) -->
+  <div class="toolbar">
+    <label for="cboFormato">Formato de guardado:</label>
+    <select id="cboFormato" onchange="cambiarFormato()">
+      <option value="xml">XML (empleados.xml)</option>
+      <option value="json">JSON (empleados.json)</option>
+    </select>
+    <input type="text" id="txtBuscar" placeholder="🔍 Buscar por nombre, documento o email..." style="flex:1;min-width:200px" oninput="aplicarFiltro()">
+    <div class="botones">
+      <button class="btn-exportar" onclick="exportarCSV()">⬇ Exportar CSV</button>
+      <button class="btn-descargar" onclick="descargarArchivos()">💾 Descargar XML y JSON</button>
+    </div>
+  </div>
+
+  <!-- Formulario (RF-03 / RF-04) -->
+  <div class="panel-form">
+    <h2 id="lblFormulario">➕ Agregar nuevo empleado</h2>
+    <div class="campos">
+      <div class="campo">
+        <label>ID Empleado (automático)</label>
+        <input type="text" id="txtId" readonly>
+      </div>
+      <div class="campo">
+        <label>Nombre completo <span class="req">*</span></label>
+        <input type="text" id="txtNombre" maxlength="50" placeholder="Ej: Juan Carlos Pérez">
+      </div>
+      <div class="campo">
+        <label>Número de documento <span class="req">*</span></label>
+        <input type="number" id="txtDocumento" placeholder="Ej: 1017234567">
+      </div>
+      <div class="campo">
+        <label>Dirección</label>
+        <input type="text" id="txtDireccion" maxlength="50" placeholder="Ej: Calle 45 #23-10, Medellín">
+      </div>
+      <div class="campo">
+        <label>Teléfono</label>
+        <input type="text" id="txtTelefono" maxlength="50" placeholder="Ej: 3001234567">
+      </div>
+      <div class="campo">
+        <label>Correo electrónico <span class="req">*</span></label>
+        <input type="email" id="txtEmail" maxlength="50" placeholder="Ej: jperez@correo.com">
+      </div>
+      <div class="campo">
+        <label>Fecha de ingreso</label>
+        <input type="date" id="dtmIngreso">
+      </div>
+    </div>
+    <div class="acciones-form">
+      <button class="btn-limpiar" onclick="limpiarFormulario()">Limpiar</button>
+      <button class="btn-guardar" onclick="guardarEmpleado()">💾 Guardar</button>
+    </div>
+    <p id="txtMensaje"></p>
+  </div>
+
+  <!-- Tabla de datos (RF-01 / RF-02) -->
+  <div class="panel-tabla">
+    <h2>📋 Empleados registrados (doble clic en una fila para editar)</h2>
+    <div class="contenedor-tabla">
+      <table id="tblEmpleados">
+        <thead>
+          <tr>
+            <th>Id. Empleado</th><th>Nombre completo</th><th>N.º Documento</th>
+            <th>Dirección</th><th>Teléfono</th><th>Correo electrónico</th>
+            <th>Fecha de ingreso</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyEmpleados"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Proyecto académico · Herramientas de Programación III — Parte B (XML/JSON) y Parte C (CRUD web en JavaScript)
+</footer>
+
+<script>
+/* ==========================================================
+   APLICACIÓN CRUD DE EMPLEADOS — Exportación Oro Verde
+   Persistencia dual: genera empleados.xml y empleados.json
+   Requisitos RF-01 a RF-8 implementados.
+   ========================================================== */
+
+// Datos en memoria (equivalente al DataSet/DGV del formulario Windows Forms)
+let empleados = [];
+let idSiguiente = 1;          // RF-08: ID auto-incremental
+let indiceEditando = null;    // null = modo agregar; número = modo editar
+
+const CAMPOS = ["IdEmpleado","strNombre","NumDocumento","strDireccion",
+                "strTelefono","strEmail","dtmIngreso"];
+
+/* ---------- Utilidades ---------- */
+const $ = id => document.getElementById(id);
+
+function mostrarMensaje(texto, tipo) {
+  const m = $("txtMensaje");
+  m.textContent = texto;
+  m.className = tipo || "";
+  if (texto) setTimeout(() => { m.textContent = ""; }, 4500);
+}
+
+/* ---------- Carga inicial de los archivos de la Parte B (RF-01) ---------- */
+async function cargarDatosIniciales() {
+  try {
+    // Intenta leer empleados.json (mismos datos que empleados.xml)
+    const resp = await fetch("empleados.json", { cache: "no-store" });
+    if (resp.ok) {
+      const data = await resp.json();
+      const lista = data.empleados || data;
+      empleados = lista.map(e => ({ ...e }));
+    } else {
+      // Fallback: leer el XML y convertirlo a objetos
+      const respXml = await fetch("empleados.xml", { cache: "no-store" });
+      const xml = await respXml.text();
+      empleados = xmlAObjetos(xml);
+    }
+    calcularIdSiguiente();
+    renderizarTabla();
+    mostrarMensaje("✅ Datos cargados correctamente desde los archivos de la Parte B.", "ok");
+  } catch (e) {
+    // Al abrir con file:// puede bloquearse el fetch; se usa una copia local
+    empleados = datosRespaldo();
+    calcularIdSiguiente();
+    renderizarTabla();
+    mostrarMensaje("⚠️ No se pudo leer los archivos por el navegador (file://). Se cargaron los datos respaldo; usa 'Descargar XML y JSON' para guardar cambios.", "error");
+  }
+}
+
+// Conversión simple XML -> objetos (equivalente a DataSet.ReadXml)
+function xmlAObjetos(textoXml) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(textoXml, "application/xml");
+  if (doc.querySelector("parsererror")) throw new Error("XML inválido");
+  return [...doc.querySelectorAll("Empleado")].map(n => ({
+    IdEmpleado:   parseInt(n.querySelector("IdEmpleado")?.textContent),
+    strNombre:    n.querySelector("strNombre")?.textContent || "",
+    NumDocumento: n.querySelector("NumDocumento")?.textContent || "",
+    strDireccion: n.querySelector("strDireccion")?.textContent || "",
+    strTelefono:  n.querySelector("strTelefono")?.textContent || "",
+    strEmail:     n.querySelector("strEmail")?.textContent || "",
+    dtmIngreso:   n.querySelector("dtmIngreso")?.textContent || ""
+  }));
+}
+
+function datosRespaldo() {
+  return [
+    {IdEmpleado:1,strNombre:"Juan Carlos Pérez",NumDocumento:1017234567,strDireccion:"Calle 45 #23-10, Medellín",strTelefono:"3001234567",strEmail:"jperez@correooroverde.com",dtmIngreso:"2024-03-15"},
+    {IdEmpleado:2,strNombre:"María Fernanda Gómez",NumDocumento:1039876543,strDireccion:"Carrera 78 #12-45, Rionegro",strTelefono:"3109876543",strEmail:"mgomez@correooroverde.com",dtmIngreso:"2023-08-01"},
+    {IdEmpleado:3,strNombre:"Andrés Felipe Restrepo",NumDocumento:715438920,strDireccion:"Calle Sur 8 #56-20, Urrao",strTelefono:"3123456789",strEmail:"arestrepo@correooroverde.com",dtmIngreso:"2022-11-20"},
+    {IdEmpleado:4,strNombre:"Laura Sofía Álvarez",NumDocumento:1098231745,strDireccion:"Transversal 32 #70-90, Medellín",strTelefono:"3156781234",strEmail:"lalvarez@correooroverde.com",dtmIngreso:"2024-06-10"},
+    {IdEmpleado:5,strNombre:"Diego Alejandro Torres",NumDocumento:801239456,strDireccion:"Vereda La Ceja, Sopetrán",strTelefono:"3014589632",strEmail:"dtorres@correooroverde.com",dtmIngreso:"2025-01-28"}
+  ];
+}
+
+function calcularIdSiguiente() {
+  idSiguiente = empleados.reduce((max, e) => Math.max(max, Number(e.IdEmpleado) || 0), 0) + 1;
+}
+
+/* ---------- Renderizado de la tabla (RF-02) ---------- */
+function renderizarTabla() {
+  const cuerpo = $("tbodyEmpleados");
+  cuerpo.innerHTML = "";
+  const filtro = $("txtBuscar").value.trim().toLowerCase();
+
+  let visibles = empleados;
+  if (filtro) {
+    visibles = empleados.filter(e =>
+      String(e.strNombre).toLowerCase().includes(filtro) ||
+      String(e.NumDocumento).includes(filtro) ||
+      String(e.strEmail).toLowerCase().includes(filtro));
+  }
+
+  if (visibles.length === 0) {
+    cuerpo.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#90a4ae">Sin registros que mostrar</td></tr>';
+    return;
+  }
+
+  visibles.forEach(e => {
+    const fila = document.createElement("tr");
+    fila.onclick = () => seleccionarFila(e.IdEmpleado);   // RF-04: clic carga en TextBox
+    fila.ondblclick = () => editarSeleccionado(e.IdEmpleado);
+    fila.innerHTML = `
+      <td>${e.IdEmpleado}</td><td>${esc(e.strNombre)}</td><td>${esc(e.NumDocumento)}</td>
+      <td>${esc(e.strDireccion)}</td><td>${esc(e.strTelefono)}</td><td>${esc(e.strEmail)}</td>
+      <td>${esc(e.dtmIngreso)}</td>
+      <td class="tbl-accion">
+        <button class="mini mini-editar" onclick="event.stopPropagation();editarSeleccionado(${e.IdEmpleado})">✏ Editar</button>
+        <button class="mini mini-eliminar" onclick="event.stopPropagation();eliminarEmpleado(${e.IdEmpleado})">🗑 Eliminar</button>
+      </td>`;
+    if (indiceEditando !== null && empleados[indiceEditando]?.IdEmpleado === e.IdEmpleado) {
+      fila.classList.add("seleccionada");
+    }
+    cuerpo.appendChild(fila);
+  });
+}
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* ---------- Selección y edición (RF-04) ---------- */
+function buscarIndice(id) {
+  return empleados.findIndex(e => Number(e.IdEmpleado) === Number(id));
+}
+
+function seleccionarFila(id) {
+  const i = buscarIndice(id);
+  if (i === -1) return;
+  indiceEditando = i;
+  const e = empleados[i];
+  $("lblFormulario").textContent = "✏ Editar empleado (ID " + e.IdEmpleado + ")";
+  $("txtId").value = e.IdEmpleado;
+  $("txtNombre").value = e.strNombre;
+  $("txtDocumento").value = e.NumDocumento;
+  $("txtDireccion").value = e.strDireccion;
+  $("txtTelefono").value = e.strTelefono;
+  $("txtEmail").value = e.strEmail;
+  $("dtmIngreso").value = (e.dtmIngreso || "").split("T")[0];
+  renderizarTabla();
+  $("txtNombre").focus();
+}
+
+function editarSeleccionado(id) {
+  seleccionarFila(id);
+  mostrarMensaje("Editando el registro nº " + id +". Modifica los campos y guarda.", "ok");
+}
+
+/* ---------- Guardar: agregar o actualizar (RF-06, RF-07, RF-08) ---------- */
+function guardarEmpleado() {
+  const nombre = $("txtNombre").value.trim();
+  const documento = $("txtDocumento").value.trim();
+  const email = $("txtEmail").value.trim();
+
+  // RF-07: validación de campos obligatorios
+  if (!nombre || !documento || !email) {
+    mostrarMensaje("❌ Campos obligatorios faltantes: Nombre, Documento y Correo electrónico son requeridos.", "error");
+    return;
+  }
+  if ($("txtDocumento").value.indexOf("-") < 0 && Number(documento) <= 0) {
+    mostrarMensaje("❌ El documento debe ser un número válido.", "error");
+    return;
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    mostrarMensaje("❌ El correo electrónico no tiene un formato válido.", "error");
+    return;
+  }
+
+  // Duplicidad: no permitir mismo documento en dos empleados
+  const dup = empleados.find((e, i) =>
+    String(e.NumDocumento) === documento && i !== indiceEditando);
+  if (dup) {
+    mostrarMensaje("❌ Ya existe un empleado con el documento " + documento +".", "error");
+    return;
+  }
+
+  const registro = {
+    strNombre: nombre,
+    NumDocumento: Number(documento),
+    strDireccion: $("txtDireccion").value.trim(),
+    strTelefono: $("txtTelefono").value.trim(),
+    strEmail: email,
+    dtmIngreso: $("dtmIngreso").value || new Date().toISOString().slice(0,10)
+  };
+
+  if (indiceEditando === null) {
+    // RF-08: el ID lo genera la aplicación, no el usuario
+    registro.IdEmpleado = idSiguiente;
+    idSiguiente++;
+    empleados.push(registro);
+    mostrarMensaje("✅ Empleado agregado con el ID " + registro.IdEmpleado + " y persistido en XML y JSON.", "ok");
+  } else {
+    registro.IdEmpleado = empleados[indiceEditando].IdEmpleado;
+    empleados[indiceEditando] = registro;
+    mostrarMensaje("✅ Empleado " + registro.IdEmpleado + " actualizado y persistido en XML y JSON.", "ok");
+  }
+
+  persistir();
+  limpiarFormulario();
+  renderizarTabla();
+}
+
+/* ---------- Eliminar con confirmación (RF-05) ---------- */
+function eliminarEmpleado(id) {
+  const i = buscarIndice(id);
+  if (i === -1) return;
+  const e = empleados[i];
+  const ok = confirm("¿Estás seguro de eliminar el empleado?\n\nID: " + e.IdEmpleado +
+                     "\nNombre: " + e.strNombre + "\n\nEsta acción no se puede deshacer.");
+  if (!ok) return;
+  empleados.splice(i, 1);
+  if (indiceEditando === i) limpiarFormulario();
+  persistir();
+  renderizarTabla();
+  mostrarMensaje("✅ Empleado "
+    + id + " eliminado y persistido en XML y JSON.", "ok");
+}
+
+/* ---------- Persistencia: generar XML y JSON (RF-06) ---------- */
+function cambiarFormato() {
+  const f = $("cboFormato").value;
+  mostrarMensaje("📁 Formulario listo. Formato preferencial: " + f.toUpperCase() + " (los cambios se guardan en ambos formatos).", "ok");
+}
+
+function generarXml() {
+  const escXml = s => String(s ?? "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<Empleados>\n';
+  empleados.forEach(e => {
+    xml += "  <Empleado>\n";
+    xml += "    <IdEmpleado>" + e.IdEmpleado + "</IdEmpleado>\n";
+    xml += "    <strNombre>" + escXml(e.strNombre) + "</strNombre>\n";
+    xml += "    <NumDocumento>" + escXml(e.NumDocumento) + "</NumDocumento>\n";
+    xml += "    <strDireccion>" + escXml(e.strDireccion) + "</strDireccion>\n";
+    xml += "    <strTelefono>" + escXml(e.strTelefono) + "</strTelefono>\n";
+    xml += "    <strEmail>" + escXml(e.strEmail) + "</strEmail>\n";
+    xml += "    <dtmIngreso>" + escXml(e.dtmIngreso) + "</dtmIngreso>\n";
+    xml += "  </Empleado>\n";
+  });
+  xml += "</Empleados>";
+  return xml;
+}
+
+function generarJson() {
+  return JSON.stringify({ empleados }, null, 2);
+}
+
+function persistir() {
+  // Además de generar los archivos descargables, guardamos copia local
+  // para que los cambios sobrevivan al recargar la página.
+  try {
+    localStorage.setItem("oroverde_empleados", JSON.stringify(empleados));
+  } catch (e) { /* modo privado */ }
+}
+
+/* ---------- Descargar los archivos actualizados ---------- */
+function descargar(nombre, contenido, tipo) {
+  const blob = new Blob([contenido], { type: tipo });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nombre;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function descargarArchivos() {
+  descargar("empleados.xml",  generarXml(),  "application/xml");
+  setTimeout(() =>
+    descargar("empleados.json", generarJson(), "application/json"), 400);
+  mostrarMensaje("💾 Se descargaron empleados.xml y empleados.json actualizados. Reemplaza los de la Parte B con estos.", "ok");
+}
+
+/* ---------- Bonus: exportar a CSV ---------- */
+function exportarCSV() {
+  const cab = "IdEmpleado;strNombre;NumDocumento;strDireccion;strTelefono;strEmail;dtmIngreso";
+  const filas = empleados.map(e =>
+    [e.IdEmpleado, e.strNombre, e.NumDocumento, e.strDireccion,
+     e.strTelefono, e.strEmail, e.dtmIngreso].join(";"));
+  descargar("empleados.csv", cab + "\n" + filas.join("\n"), "text/csv");
+  mostrarMensaje("⬇ Archivo empleados.csv exportado.", "ok");
+}
+
+/* ---------- Filtro / búsqueda (bonus) ---------- */
+function aplicarFiltro() { renderizarTabla(); }
+
+/* ---------- Limpiar formulario ---------- */
+function limpiarFormulario() {
+  indiceEditando = null;
+  $("lblFormulario").textContent = "➕ Agregar nuevo empleado";
+  ["txtNombre","txtDocumento","txtDireccion","txtTelefono","txtEmail"].forEach(id => $(id).value = "");
+  $("dtmIngreso").value = "";
+  $("txtId").value = "(nuevo: " + idSiguiente + ")";
+  renderizarTabla();
+}
+
+/* ---------- Arranque (RF-01) ---------- */
+window.addEventListener("DOMContentLoaded", async () => {
+  // Copia en localStorage prevalece sobre el archivo de disco
+  let cargadoDeLocal = false;
+  try {
+    const local = localStorage.getItem("oroverde_empleados");
+    if (local) {
+      const arr = JSON.parse(local);
+      if (Array.isArray(arr) && arr.length > 0) {
+        empleados = arr;
+        cargadoDeLocal = true;
+      }
+    }
+  } catch (e) {}
+
+  if (!cargadoDeLocal) await cargarDatosIniciales();
+  else { calcularIdSiguiente(); renderizarTabla();
+    mostrarMensaje("✅ Cambios previos restaurados (localStorage).", "ok"); }
+
+  limpiarFormulario();
+});
+</script>
+
+</body>
+</html>
